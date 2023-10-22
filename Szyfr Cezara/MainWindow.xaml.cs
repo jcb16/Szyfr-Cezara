@@ -50,35 +50,6 @@ namespace Szyfr_Cezara
         }
 
 
-        //private string Szyfruj(string tekst, int klucz)
-        //{
-        //    StringBuilder zaszyfrowanyTekst = new StringBuilder();
-
-        //    foreach (char znak in tekst)
-        //    {
-        //        if (char.IsLetter(znak))
-        //        {
-        //            char startZakresu = char.IsUpper(znak) ? 'A' : 'a';
-        //            int offset = char.IsUpper(znak) ? 'Z' : 'z';
-
-        //            // Szyfrowanie znaku
-        //            int zaszyfrowanyZnak = ((znak - startZakresu + klucz) % (offset - startZakresu + 1)) + startZakresu;
-
-        //            if (zaszyfrowanyZnak < startZakresu)
-        //            {
-        //                zaszyfrowanyZnak += (offset - startZakresu + 1);
-        //            }
-
-        //            zaszyfrowanyTekst.Append((char)zaszyfrowanyZnak);
-        //        }
-        //        else
-        //        {
-        //            zaszyfrowanyTekst.Append(znak);
-        //        }
-        //    }
-
-        //    return zaszyfrowanyTekst.ToString();
-        //}
 
         private string Szyfruj(string tekst, int klucz)
         {
@@ -88,24 +59,15 @@ namespace Szyfr_Cezara
             {
                 if (char.IsLetter(znak))
                 {
-                    char startZakresu = char.IsUpper(znak) ? 'A' : 'a';
-                    char offset = char.IsUpper(znak) ? 'Z' : 'z';
+                    bool jestDuzaLitera = char.IsUpper(znak);
+                    string alfabet = jestDuzaLitera ? "ABCDEFGHIJKLMNOPQRSTUVWXYZĄĆĘŁŃÓŚŹŻ" : "abcdefghijklmnopqrstuvwxyząćęłńóśźż";
 
-                    if (znak >= 'Ą' && znak <= 'Ź')
+                    int pozycja = alfabet.IndexOf(znak);
+                    if (pozycja >= 0)
                     {
-                        startZakresu = 'Ą';
-                        offset = 'Ź';
+                        int nowaPozycja = (pozycja + klucz) % alfabet.Length;
+                        zaszyfrowanyTekst.Append(alfabet[nowaPozycja]);
                     }
-
-                    // Szyfrowanie znaku
-                    int zaszyfrowanyZnak = ((znak - startZakresu + klucz) % (offset - startZakresu + 1)) + startZakresu;
-
-                    if (zaszyfrowanyZnak < startZakresu)
-                    {
-                        zaszyfrowanyZnak += (offset - startZakresu + 1);
-                    }
-
-                    zaszyfrowanyTekst.Append((char)zaszyfrowanyZnak);
                 }
                 else
                 {
@@ -116,14 +78,33 @@ namespace Szyfr_Cezara
             return zaszyfrowanyTekst.ToString();
         }
 
-
-
-
-
-        private string Deszyfruj(string tekst, int klucz)
+        private string Deszyfruj(string zaszyfrowanyTekst, int klucz)
         {
-            return Szyfruj(tekst, 26 - klucz);
+            StringBuilder odszyfrowanyTekst = new StringBuilder();
+
+            foreach (char znak in zaszyfrowanyTekst)
+            {
+                if (char.IsLetter(znak))
+                {
+                    bool jestDuzaLitera = char.IsUpper(znak);
+                    string alfabet = jestDuzaLitera ? "ABCDEFGHIJKLMNOPQRSTUVWXYZĄĆĘŁŃÓŚŹŻ" : "abcdefghijklmnopqrstuvwxyząćęłńóśźż";
+
+                    int pozycja = alfabet.IndexOf(znak);
+                    if (pozycja >= 0)
+                    {
+                        int nowaPozycja = (pozycja - klucz + alfabet.Length) % alfabet.Length;
+                        odszyfrowanyTekst.Append(alfabet[nowaPozycja]);
+                    }
+                }
+                else
+                {
+                    odszyfrowanyTekst.Append(znak);
+                }
+            }
+
+            return odszyfrowanyTekst.ToString();
         }
+
 
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -153,9 +134,9 @@ namespace Szyfr_Cezara
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             string szyfrogram = EncryptedText.Text;
-            if (comboBoxKey.SelectedItem != null)
+            if (ComboBoxKey2.SelectedItem != null)
             {
-                if (int.TryParse(((ComboBoxItem)comboBoxKey.SelectedItem).Content.ToString(), out int wybranyKlucz))
+                if (int.TryParse(((ComboBoxItem)ComboBoxKey2.SelectedItem).Content.ToString(), out int wybranyKlucz))
                 {
                     labelResult2.Content = "";
                     labelResult2.Content = Deszyfruj(szyfrogram, wybranyKlucz);

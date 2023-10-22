@@ -50,7 +50,7 @@
         <Border BorderBrush="Black" Background="Black" BorderThickness="1" HorizontalAlignment="Left" Height="9" Margin="0,163,0,0" VerticalAlignment="Top" Width="810"/>
         <TextBox HorizontalAlignment="Left" Height="70" Margin="39,241,0,0" TextWrapping="Wrap" Text="Szyfrogram" VerticalAlignment="Top" Width="153" Name="EncryptedText"/>
         <Button Content="Deszyfruj" HorizontalAlignment="Left" Height="48" Margin="254,252,0,0" VerticalAlignment="Top" Width="82" Click="Button_Click_1"/>
-        <ComboBox HorizontalAlignment="Left" Height="32" Margin="432,266,0,0" VerticalAlignment="Top" Width="100">
+        <ComboBox HorizontalAlignment="Left" Height="32" Margin="432,266,0,0" VerticalAlignment="Top" Width="100" Name="ComboBoxKey2">
             <ComboBoxItem Content="1"/>
             <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="3"/>
